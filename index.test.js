@@ -76,4 +76,23 @@ describe('Restaurant and Menu Models', () => {
         result = await Restaurant.findAll({raw:true})
         expect(result.length).toBe(2)
     });
+
+    test('One to many test', async() => {
+        const testRestaurant = await Restaurant.bulkCreate(seedRestaurant)
+        const testMenu = await Menu.bulkCreate(seedMenu)
+        const testApple = await Restaurant.findOne({
+            where: {
+                name: 'AppleBees'
+            }
+        })
+  
+        const testBreakfast = await Menu.findAll()
+  
+        await testApple.addMenus(testBreakfast)
+  
+        testAssociation = await testApple.getMenus({raw:true})
+        testAL = testAssociation.length
+        expect(testAL).toBe(3)
+
+    })
 })

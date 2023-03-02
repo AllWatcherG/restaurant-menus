@@ -7,8 +7,27 @@ const {
 
 let wow = async function(){
     await sequelize.sync({force:true})
-    dummyMenu = await Menu.bulkCreate(seedMenu)
-    console.log(await Menu.findMenu('Breakfast'))
+    
+      const testRestaurant = await Restaurant.bulkCreate(seedRestaurant)
+      const testMenu = await Menu.bulkCreate(seedMenu)
+      const testApple = await Restaurant.findOne({
+          where: {
+              name: 'AppleBees'
+          }
+      })
+
+      const testBreakfast = await Menu.findAll()
+
+      await testApple.addMenus(testBreakfast)
+
+      testAssociation = await testApple.getMenus({raw:true})
+      // testAssociation = testAssociation[0]
+      console.log(testAssociation)
+      
+      
+
+
 }
 
-wow()
+// wow()
+
