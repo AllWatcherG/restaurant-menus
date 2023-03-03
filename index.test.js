@@ -1,8 +1,9 @@
 const {sequelize} = require('./db')
-const {Restaurant, Menu} = require('./models/index')
+const {Restaurant, Menu, Item} = require('./models/index')
 const {
     seedRestaurant,
     seedMenu,
+    seedItem,
   } = require('./seedData');
 
 describe('Restaurant and Menu Models', () => {
@@ -93,6 +94,23 @@ describe('Restaurant and Menu Models', () => {
         testAssociation = await testApple.getMenus({raw:true})
         testAL = testAssociation.length
         expect(testAL).toBe(3)
+
+    })
+
+    test('Many to Many', async()=>{
+        await Menu.bulkCreate(seedMenu)
+        await Item.bulkCreate(seedItem)
+        let testMenu = await Menu.findAll()
+        let testItem = await Item.findAll()
+        for(let i = 0; i < testMenu.length; i++){
+            await testMenu[i].addItems(testItem)
+        }
+        for(let i = 0; i < testItem.length; i++){
+            await testItem[i].addMenus(testMenu)
+        }
+        const verifyMenu= await Menu.findByPk(1, {include:Item})
+        test = verifyMenu
+        expect(test.Items.length).toBe(3)
 
     })
 })

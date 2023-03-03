@@ -1,5 +1,5 @@
 const path = require('path');
-const { Sequelize } = require('sequelize');
+const { Sequelize, Model } = require('sequelize');
 
 // TODO - connect to db via sequelize
 const sequelize = new Sequelize({
@@ -8,5 +8,6 @@ const sequelize = new Sequelize({
 })
 
 module.exports = {
-    sequelize
+    sequelize,
+    Model
 };
